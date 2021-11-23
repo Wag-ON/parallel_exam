@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 /output
-/.idea
+.idea/misc.xml
 
 # Distribution / packaging
 .Python
