@@ -19,3 +19,4 @@ class PolygonizationMethod(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def handle_single_house(self, single_contour):
         pass
+

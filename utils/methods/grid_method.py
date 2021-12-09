@@ -3,6 +3,7 @@ import numpy as np
 import math
 import copy
 from rdp import rdp
+import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
@@ -14,8 +15,15 @@ else:
 
 
 class GridMethod(PolygonizationMethod):
+
     def __init__(self):
         super().__init__()
+
+    def handle_single_house(self, single_contour):
+        house, x_top_left_bb, y_top_left_bb = super().prepare_single_house(single_contour)
+        polygonized_contour = self.process_single_house(house, x_top_left_bb, y_top_left_bb)
+
+        return polygonized_contour
 
     def get_best_alternate_node(self, given_point, grid_step, grid):
         best_dist = 1e9
@@ -110,6 +118,10 @@ class GridMethod(PolygonizationMethod):
                 polygonized_points.append([best_node])
 
         cv2.drawContours(house_polygonized, [np.array(polygonized_points)], contourIdx=-1, color=255, thickness=-1)
+
+        # plt.imshow(house + grid)
+        # plt.show()
+
         iou = stuff.calc_iou(house, house_polygonized)
 
         return {'polygonized_points': polygonized_points,
@@ -248,9 +260,3 @@ class GridMethod(PolygonizationMethod):
         contour_global = np.array(polygon_global)
 
         return contour_global
-
-    def handle_single_house(self, single_contour):
-        house, x_top_left_bb, y_top_left_bb = super().prepare_single_house(single_contour)
-        polygonized_contour = self.process_single_house(house, x_top_left_bb, y_top_left_bb)
-
-        return polygonized_contour
